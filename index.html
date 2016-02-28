@@ -1,66 +1,83 @@
 <!DOCTYPE html> 
 <html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 
 <body onload="getLocation()">
- 
- 
-<select name="nationality" id="nationality" > 
-	<option value="">Select Location </option> 
-	<option value="Canada">Canada </option> 
-	<option value="uk">United Kingdom </option> 
-	<option value="USVI">Charlotte Amalie </option> 
-</select>
- 
-<div id="input"> 
-	
-	
-</div>
+ <div class="w3-container w3-card-4"  > 
+	 <h1>Your weather wooo</h1>
+	<select name="nationality" id="nationality" class=" w3-green w3-ripple" > 
+		<option value="">Select Location </option> 
+		<option value="Canada">Canada </option> 
+		<option value="uk">United Kingdom </option> 
+		<option value="USVI">Charlotte Amalie </option> 
+		<option value="pk">Pakistan</option> 
+	</select>
+	 
+	<div id="input"  > </div>
 
-<p id="browserMsg">   </p>
+	<p id="browserMsg">   </p>
 
- 
+ </div>
 <script>
 	
-	//For error message
-	var x = document.getElementById("browserMsg");
+//For error message
+var x = document.getElementById("browserMsg");
 
-	// Getting input data in case denies location
-	$( "#nationality" ).change(function() {
-		var country = $("#nationality").val();
-		var apiurl = "http://api.openweathermap.org/data/2.5/weather?q=,"+ 
-					country+"&mode=html&appid=44db6a862fba0b067b1930da0d769e98" ;
-		$("#input").html('Loading...');
-		$.get(apiurl, function(data, status){
-			$("#input").html(data);
-		});
+// Getting input data in case denies location
+$( "#nationality" ).change(function() {
+	var country = $("#nationality").val();
+	var apiurl = "http://api.openweathermap.org/data/2.5/weather?q=,"+ 
+				country+"&mode=html&appid=44db6a862fba0b067b1930da0d769e98" ;
+	$("#input").html('Loading...');
+	x.innerHTML = "";
+	$.get(apiurl, function(data, status){
+		$("#input").html(data);
 	});
 	
-	//Getting location and showing weather
-	function getLocation() {
-		if (navigator.geolocation) {
-			
-			navigator.geolocation.getCurrentPosition(showPosition);
-		} else { 
-			x.innerHTML = "Geolocation is not supported by this browser.";
-			alert("Not Shared");
-		}
-	}
+});
 
-	function showPosition(position) {
+//Getting location and showing weather
+function getLocation() {
+	if (navigator.geolocation) {
 		
-		var apiurl = "http://api.openweathermap.org/data/2.5/weather?lat="+ 
-					position.coords.latitude+"&lon="+position.coords.longitude+
-					"&mode=html&appid=44db6a862fba0b067b1930da0d769e98" ;
-			$("#nationality").hide();
-			$("#input").html('Loading...');
-		$.get(apiurl, function(data, status){
-			$("#input").html(data);
-		});
-		
+		navigator.geolocation.getCurrentPosition(showPosition, showError);
+	} else { 
+		x.innerHTML = "Geolocation is not supported by this browser.";
+		 
 	}
-	 
+}
+
+function showPosition(position) {
+	
+	var apiurl = "http://api.openweathermap.org/data/2.5/weather?lat="+ 
+				position.coords.latitude+"&lon="+position.coords.longitude+
+				"&mode=html&appid=44db6a862fba0b067b1930da0d769e98" ;
+		$("#nationality").hide();
+		$("#input").html('Loading...');
+	$.get(apiurl, function(data, status){
+		$("#input").html(data);
+	});
+	
+}
+
+
+function showError(error) {
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            x.innerHTML = "User denied the request for Geolocation."
+            break;
+        case error.POSITION_UNAVAILABLE:
+            x.innerHTML = "Location information is unavailable."
+            break;
+        case error.TIMEOUT:
+            x.innerHTML = "The request to get user location timed out."
+            break;
+        case error.UNKNOWN_ERROR:
+            x.innerHTML = "An unknown error occurred."
+            break;
+    }
+} 
 
 </script>
 
