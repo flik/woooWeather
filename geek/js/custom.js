@@ -29,3 +29,5 @@
 	});
 
 })(jQuery);
+
+angular.module('XApp', []).controller('userCtrl', function($scope) { $scope.myName = 'Mohammad Ashfaq'; });
